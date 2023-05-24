@@ -1,0 +1,12 @@
+.filter-wrapper{
+    padding: 15px 30px;
+    border-bottom: 1px solid #ffffff;
+}
+
+.list-header{
+    width: fit-content
+}
+
+.custom-select{
+    background-color: #ffffff;
+}

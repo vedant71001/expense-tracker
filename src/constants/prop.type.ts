@@ -18,3 +18,7 @@ export type ExpenseDetails = {
 export type NewExpenseProp = {
   onSaveExpense: (expense: Expense)=> void
 }
+
+export type FilterExpenseProp = {
+  onFilterSelect : (year: string) => void
+}

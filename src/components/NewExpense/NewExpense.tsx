@@ -39,6 +39,7 @@ export const NewExpense = (props: NewExpenseProp) => {
   const today = new Date().toISOString().split("T")[0];
   return (
     <div className="new-expense-form-group">
+      <h2>Add Expense</h2>
       <form onSubmit={formSubmitHandler}>
         <Grid container>
           <Grid item xs={3} className="p-2">
