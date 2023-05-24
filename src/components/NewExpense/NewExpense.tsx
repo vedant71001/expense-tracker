@@ -1,107 +1,102 @@
-import { useState } from "react";
 import { Button, Grid } from "@mui/material";
 import "./NewExpense.css";
 import { NewExpenseProp } from "../../constants/prop.type";
 import { FilterYears } from "../../constants/constants";
+import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 export const NewExpense = (props: NewExpenseProp) => {
-  const [title, setTitle] = useState("");
-
-  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-
-  const [amount, setAmount] = useState("");
-
-  const amountChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(event.target.value);
-  };
-
-  const [date, setDate] = useState("");
-
-  const dateChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(event.target.value);
-  };
-
-  const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    let expense = {
-      id: Math.random().toString(),
-      title: title,
-      amount: Number.parseInt(amount),
-      date: new Date(date),
-    };
-    props.onSaveExpense(expense);
-    setTitle("");
-    setAmount("");
-    setDate("");
-  };
-
   const mindate = new Date(FilterYears[0]).toISOString().split("T")[0];
   const today = new Date().toISOString().split("T")[0];
+  const validationSchema = Yup.object({
+    title: Yup.string().required("Please enter expense title!"),
+    amount: Yup.number()
+      .required("Please enter amount!")
+      .min(0.01, "Please enter valid amount value!"),
+    date: Yup.date().required("Expense date is required!").max(today,"You cannot select future dates!")
+  });
+
+  const initialValue = {
+    title: "",
+    amount: 0,
+    date: "",
+  };
+
+  const formSubmitHandler = (values: typeof initialValue) => {
+    let dateObj = new Date(values.date);
+    props.onSaveExpense({
+      ...values,
+      id: Math.random().toString(),
+      date: dateObj,
+    });
+  };
+
+  const renderError = (message: string) => (
+    <p className="text-danger">{message}</p>
+  );
+
   return (
     <div className="new-expense-form-group">
       <h2>Add Expense</h2>
-      <form onSubmit={formSubmitHandler}>
-        <Grid container>
-          <Grid item xs={3} className="p-2">
-            <div className="mb-3">
-              <label htmlFor="title" className="form-label">
-                Title
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="title"
-                placeholder="Enter Expense Title"
-                onChange={titleChangeHandler}
-                value={title}
-                required
-              />
-            </div>
+
+      <Formik
+        initialValues={initialValue}
+        validationSchema={validationSchema}
+        onSubmit={formSubmitHandler}
+      >
+        <Form>
+          <Grid container>
+            <Grid item xs={3} className="p-2">
+              <div className="mb-3">
+                <label htmlFor="title" className="form-label">
+                  Title
+                </label>
+                <Field
+                  name="title"
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter Expense Title"
+                />
+                <ErrorMessage name="title" render={renderError} />
+              </div>
+            </Grid>
+            <Grid item xs={3} className="p-2">
+              <div className="mb-3">
+                <label htmlFor="amount" className="form-label">
+                  Amount
+                </label>
+                <Field
+                  name="amount"
+                  type="number"
+                  className="form-control"
+                  placeholder="Enter Expense Amount"
+                />
+                <ErrorMessage name="amount" render={renderError} />
+              </div>
+            </Grid>
+            <Grid item xs={3} className="p-2">
+              <div className="mb-3">
+                <label htmlFor="date" className="form-label">
+                  date
+                </label>
+                <Field
+                  name="date"
+                  type="date"
+                  className="form-control"
+                  min={mindate}
+                  max={today}
+                />
+                <ErrorMessage name="date" render={renderError} />
+              </div>
+            </Grid>
+            <Grid item xs={3} className="p-3">
+              <Button type="submit" variant="contained" className="mt-4">
+                Save
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={3} className="p-2">
-            <div className="mb-3">
-              <label htmlFor="amount" className="form-label">
-                Amount
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="amount"
-                placeholder="Enter Expense Amount"
-                min="0.01"
-                step="0.01"
-                value={amount}
-                onChange={amountChangeHandler}
-                required
-              />
-            </div>
-          </Grid>
-          <Grid item xs={3} className="p-2">
-            <div className="mb-3">
-              <label htmlFor="date" className="form-label">
-                date
-              </label>
-              <input
-                type="date"
-                className="form-control"
-                id="date"
-                min={mindate}
-                max={today}
-                value={date}
-                onChange={dateChangeHandler}
-                required
-              />
-            </div>
-          </Grid>
-          <Grid item xs={3} className="p-3">
-            <Button type="submit" variant="contained" className="mt-4">
-              Save
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+        </Form>
+      </Formik>
     </div>
   );
 };

@@ -24,7 +24,7 @@ export const Expenses = (props: ExpensesType) => {
   return (
     <div className="expenses-list">
       <FilterExpense onFilterSelect={filterExpenseHandler} />
-      {filteredExpenses.length === 0 && <h3 className="m-3">No Expenses Found</h3>}
+      {filteredExpenses.length === 0 && <h3 className="m-3 text-center">No Expenses Found</h3>}
       {filteredExpenses.length>0 && filteredExpenses.map((expense) => (
         <ExpenseItem
           key={expense.id}
