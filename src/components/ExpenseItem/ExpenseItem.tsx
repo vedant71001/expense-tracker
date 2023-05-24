@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import "./ExpenseItem.css";
-import { ExpenseDetails } from "./prop.type";
+import { ExpenseDetails } from "../../constants/prop.type";
 
 export const ExpenseItem = (props: ExpenseDetails) => {
   const month = props.date.toLocaleString("en-US", { month: "long" });
@@ -16,7 +16,7 @@ export const ExpenseItem = (props: ExpenseDetails) => {
       <Typography variant="h4" className="expense-item__title">
         {props.title}
       </Typography>
-      <div className="expense-item__amount">{props.amount}</div>
+      <div className="expense-item__amount">${props.amount}</div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Grid } from "@mui/material";
 import "./NewExpense.css";
-import { NewExpenseProp } from "./prop.type";
+import { NewExpenseProp } from "../../constants/prop.type";
 
 export const NewExpense = (props: NewExpenseProp) => {
   const [title, setTitle] = useState("");
