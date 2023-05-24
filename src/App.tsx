@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Grid, Typography } from "@mui/material";
+import { Expenses } from "./components/Expenses";
+import { NewExpense } from "./components/NewExpense";
+import { Expense, ExpensesType } from "./components/prop.type";
+import { useState } from "react";
 
 function App() {
+
+  const [expenses, setExpenses] = useState([] as Expense[])
+
+  const saveExpenseHandler = (expense : Expense) => {
+    setExpenses((prevState: Expense[])=>{
+      return [expense,...prevState]
+    })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid container>
+      <Grid className="App" item xs={12}>
+        <Typography variant="h2">Expense Tracker</Typography>
+        <NewExpense onSaveExpense={saveExpenseHandler}></NewExpense>
+        <Expenses expenses={expenses} />
+      </Grid>
+    </Grid>
   );
 }
 

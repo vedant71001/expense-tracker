@@ -1,0 +1,25 @@
+.expense-item{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #3f3f3f;
+    border-radius: 12px;
+    margin: 25px 30px;
+}
+
+.expense-item__date{
+    border: 1px solid #3f3f3f;
+    border-radius: 12px;
+    margin: 20px;
+    padding: 7px 15px;
+}
+
+.expense-item__title{
+    padding: 30px;
+}
+
+.expense-item__amount{
+    border: 1px solid #3f3f3f;
+    border-radius: 12px;
+    margin: 20px;
+    padding: 7px 15px;
+}
