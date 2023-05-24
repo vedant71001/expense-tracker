@@ -1,12 +1,16 @@
-import { Grid, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import { Grid, FormControl, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import "./FilterExpense.css";
 import { FilterYears } from "../../constants/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FilterExpenseProp } from "../../constants/prop.type";
 
 export const FilterExpense = (props : FilterExpenseProp) => {
 
   const [yearSelected,setYearSelected] = useState(FilterYears[FilterYears.length-1]);
+
+  useEffect(()=>{
+    document.title = `Expenses - ${yearSelected}`
+  })
 
   const yearSelectHandler = (event : SelectChangeEvent<string>) => {
     setYearSelected(event.target.value)

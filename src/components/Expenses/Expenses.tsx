@@ -16,7 +16,7 @@ export const Expenses = (props: ExpensesType) => {
   let filteredExpenses : Expense[] = [];
 
   for(const item of props.expenses){
-    if(item.date.getFullYear().toString() == yearSelected){
+    if(item.date.getFullYear().toString() === yearSelected){
       filteredExpenses.push(item);
     }
   }

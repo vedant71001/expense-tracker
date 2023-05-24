@@ -1,4 +1,3 @@
-import "./App.css";
 import { Grid, Typography } from "@mui/material";
 import { Expenses } from "./components/Expenses/Expenses";
 import { NewExpense } from "./components/NewExpense/NewExpense";
@@ -16,8 +15,10 @@ function App() {
 
   return (
     <Grid container>
-      <Grid className="App" item xs={12}>
-        <Typography variant="h2">Expense Tracker</Typography>
+      <Grid item xs={12}>
+        <Typography variant="h2" className="text-center">
+          Expense Tracker
+        </Typography>
         <NewExpense onSaveExpense={saveExpenseHandler}></NewExpense>
         <Expenses expenses={expenses} />
       </Grid>

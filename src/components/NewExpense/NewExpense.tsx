@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Grid } from "@mui/material";
 import "./NewExpense.css";
 import { NewExpenseProp } from "../../constants/prop.type";
+import { FilterYears } from "../../constants/constants";
 
 export const NewExpense = (props: NewExpenseProp) => {
   const [title, setTitle] = useState("");
@@ -22,20 +23,21 @@ export const NewExpense = (props: NewExpenseProp) => {
     setDate(event.target.value);
   };
 
-  const formSubmitHandler = (event : React.FormEvent<HTMLFormElement>) => {
+  const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let expense = {
-        id: Math.random().toString(),
-        title: title,
-        amount: Number.parseInt(amount),
-        date: new Date(date)
-    }
+      id: Math.random().toString(),
+      title: title,
+      amount: Number.parseInt(amount),
+      date: new Date(date),
+    };
     props.onSaveExpense(expense);
-    setTitle("")
-    setAmount("")
-    setDate("")
-  }
+    setTitle("");
+    setAmount("");
+    setDate("");
+  };
 
+  const mindate = new Date(FilterYears[0]).toISOString().split("T")[0];
   const today = new Date().toISOString().split("T")[0];
   return (
     <div className="new-expense-form-group">
@@ -85,6 +87,7 @@ export const NewExpense = (props: NewExpenseProp) => {
                 type="date"
                 className="form-control"
                 id="date"
+                min={mindate}
                 max={today}
                 value={date}
                 onChange={dateChangeHandler}
@@ -93,7 +96,9 @@ export const NewExpense = (props: NewExpenseProp) => {
             </div>
           </Grid>
           <Grid item xs={3} className="p-3">
-            <Button type="submit" variant="contained" className="mt-4">Save</Button>
+            <Button type="submit" variant="contained" className="mt-4">
+              Save
+            </Button>
           </Grid>
         </Grid>
       </form>
