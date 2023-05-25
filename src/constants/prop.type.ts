@@ -1,5 +1,5 @@
 export type Expense = {
-  id: string;
+  id: number;
   title: string;
   amount: number;
   date: Date;
@@ -22,3 +22,4 @@ export type NewExpenseProp = {
 export type FilterExpenseProp = {
   onFilterSelect : (year: string) => void
 }
+

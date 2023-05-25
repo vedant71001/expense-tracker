@@ -1,9 +1,10 @@
 import { Button, Grid } from "@mui/material";
 import "./NewExpense.css";
 import { NewExpenseProp } from "../../constants/prop.type";
-import { FilterYears } from "../../constants/constants";
+import { FilterYears, baseUrl } from "../../constants/constants";
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikState } from "formik";
+import axios from "axios";
 
 export const NewExpense = (props: NewExpenseProp) => {
   const mindate = new Date(FilterYears[0]).toISOString().split("T")[0];
@@ -13,7 +14,9 @@ export const NewExpense = (props: NewExpenseProp) => {
     amount: Yup.number()
       .required("Please enter amount!")
       .min(0.01, "Please enter valid amount value!"),
-    date: Yup.date().required("Expense date is required!").max(today,"You cannot select future dates!")
+    date: Yup.date()
+      .required("Expense date is required!")
+      .max(today, "You cannot select future dates!"),
   });
 
   const initialValue = {
@@ -22,13 +25,22 @@ export const NewExpense = (props: NewExpenseProp) => {
     date: "",
   };
 
-  const formSubmitHandler = (values: typeof initialValue) => {
+  type SubmitArgs = {
+    resetForm: (nextState?: Partial<FormikState<typeof initialValue>>) => void;
+  };
+
+  const formSubmitHandler = (
+    values: typeof initialValue,
+    { resetForm }: SubmitArgs
+  ) => {
     let dateObj = new Date(values.date);
+    axios.post(`${baseUrl}/Expense/AddExpense`, values);
     props.onSaveExpense({
       ...values,
-      id: Math.random().toString(),
+      id: Math.random(),
       date: dateObj,
     });
+    resetForm();
   };
 
   const renderError = (message: string) => (
