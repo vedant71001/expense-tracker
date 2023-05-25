@@ -1,4 +1,4 @@
-import { AddExpenseProp } from "../constants/prop.type";
+import { AddExpenseProp, EditExpenseProp } from "../constants/prop.type";
 import { request } from "./request";
 
 class ExpenseService {
@@ -8,12 +8,28 @@ class ExpenseService {
         const url = `${this.ENDPOINT}/GetExpenses`;
         return request.get(url).then((res)=>{
             return res.data;
-        })
+        }).catch(()=>{return "error"})
     }
 
     public async AddExpense(param : AddExpenseProp){
         const url = `${this.ENDPOINT}/AddExpense`;
-        request.post(url,param);
+        return request.post(url,param).then((res) => {
+            return res.data
+        });
+    }
+
+    public async DeleteExpense(id:number){
+        const url = `${this.ENDPOINT}/DeleteExpense?id=${id}`;
+        return request.delete(url).then((res) => {
+            return res.data
+        })
+    }
+
+    public async EditExpense(param: EditExpenseProp){
+        const url = `${this.ENDPOINT}/EditExpense`
+        return request.put(url,param).then((res) => {
+            return res.data
+        });
     }
 }
 

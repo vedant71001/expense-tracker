@@ -11,14 +11,16 @@ function App() {
 
   useEffect(() => {
     expensesServices.GetAllExpenses().then((response) => {
-      setExpenses(
-        response.map((expense: ExpenseModel) => {
-          return {
-            ...expense,
-            date: new Date(expense.date),
-          };
-        })
-      );
+      if (response !== "error") {
+        setExpenses(
+          response.map((expense: ExpenseModel) => {
+            return {
+              ...expense,
+              date: new Date(expense.date),
+            };
+          })
+        );
+      }
     });
   }, []);
 

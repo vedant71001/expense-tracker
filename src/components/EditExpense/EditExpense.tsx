@@ -1,12 +1,13 @@
-import { Button, Grid } from "@mui/material";
-import "./NewExpense.css";
-import { AddExpenseProp, NewExpenseProp } from "../../constants/prop.type";
-import { FilterYears } from "../../constants/constants";
+import { EditExpenseProp, Expense } from "../../constants/prop.type";
+import { Grid, Button } from "@mui/material";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage, FormikState } from "formik";
-import expensesServices from "../../services/expenses.services";
+import expenseService from "../../services/expenses.services";
+import { FilterYears } from "../../constants/constants";
 
-export const NewExpense = (props: NewExpenseProp) => {
+export const EditExpense = (
+  props: Expense & { onEdit: (values: EditExpenseProp) => void }
+) => {
   const mindate = new Date(FilterYears[0]).toISOString().split("T")[0];
   const today = new Date().toISOString().split("T")[0];
   const validationSchema = Yup.object({
@@ -20,30 +21,16 @@ export const NewExpense = (props: NewExpenseProp) => {
   });
 
   const initialValue = {
-    title: "",
-    amount: 0,
-    date: "",
+    id: props.id,
+    title: props.title,
+    amount: props.amount,
+    date: props.date.toISOString().split("T")[0],
   };
 
-  type SubmitArgs = {
-    resetForm: (nextState?: Partial<FormikState<AddExpenseProp>>) => void;
-  };
-
-  const formSubmitHandler = (
-    values: AddExpenseProp,
-    { resetForm }: SubmitArgs
-  ) => {
-    let dateObj = new Date(values.date);
-    let id: number;
-    expensesServices.AddExpense(values).then((res) => {
-      id = res;
-      props.onSaveExpense({
-        ...values,
-        id: id,
-        date: dateObj,
-      });
+  const formSubmitHandler = (values: EditExpenseProp) => {
+    expenseService.EditExpense(values).then((res) => {
+      props.onEdit(values);
     });
-    resetForm();
   };
 
   const renderError = (message: string) => (
@@ -51,8 +38,8 @@ export const NewExpense = (props: NewExpenseProp) => {
   );
 
   return (
-    <div className="new-expense-form-group">
-      <h2>Add Expense</h2>
+    <div>
+      <h2>Edit Expense</h2>
 
       <Formik
         initialValues={initialValue}

@@ -10,9 +10,12 @@ export type ExpensesType = {
 };
 
 export type ExpenseDetails = {
+  id: number;
   title: string;
   amount: number;
   date: Date;
+  onDelete: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onEdit: (values: EditExpenseProp)=> void
 };
 
 export type NewExpenseProp = {
@@ -28,3 +31,11 @@ export type AddExpenseProp = {
   amount: number;
   date: string;
 }
+
+export type EditExpenseProp = {
+  id: number;
+  title: string;
+  amount: number;
+  date: string;
+}
+
