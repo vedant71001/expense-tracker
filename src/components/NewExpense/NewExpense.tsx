@@ -1,10 +1,10 @@
 import { Button, Grid } from "@mui/material";
 import "./NewExpense.css";
-import { NewExpenseProp } from "../../constants/prop.type";
-import { FilterYears, baseUrl } from "../../constants/constants";
+import { AddExpenseProp, NewExpenseProp } from "../../constants/prop.type";
+import { FilterYears } from "../../constants/constants";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage, FormikState } from "formik";
-import axios from "axios";
+import expensesServices from "../../services/expenses.services";
 
 export const NewExpense = (props: NewExpenseProp) => {
   const mindate = new Date(FilterYears[0]).toISOString().split("T")[0];
@@ -26,15 +26,15 @@ export const NewExpense = (props: NewExpenseProp) => {
   };
 
   type SubmitArgs = {
-    resetForm: (nextState?: Partial<FormikState<typeof initialValue>>) => void;
+    resetForm: (nextState?: Partial<FormikState<AddExpenseProp>>) => void;
   };
 
   const formSubmitHandler = (
-    values: typeof initialValue,
+    values: AddExpenseProp,
     { resetForm }: SubmitArgs
   ) => {
     let dateObj = new Date(values.date);
-    axios.post(`${baseUrl}/Expense/AddExpense`, values);
+    expensesServices.AddExpense(values);
     props.onSaveExpense({
       ...values,
       id: Math.random(),

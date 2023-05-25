@@ -3,17 +3,16 @@ import { Expenses } from "./components/Expenses/Expenses";
 import { NewExpense } from "./components/NewExpense/NewExpense";
 import { Expense } from "./constants/prop.type";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { ExpenseModel } from "./models/ExpenseModel";
-import { baseUrl } from "./constants/constants";
+import expensesServices from "./services/expenses.services";
 
 function App() {
   const [expenses, setExpenses] = useState([] as Expense[]);
 
   useEffect(() => {
-    axios.get(`${baseUrl}/Expense/GetExpenses`).then((response) => {
+    expensesServices.GetAllExpenses().then((response) => {
       setExpenses(
-        response.data.map((expense: ExpenseModel) => {
+        response.map((expense: ExpenseModel) => {
           return {
             ...expense,
             date: new Date(expense.date),

@@ -23,3 +23,8 @@ export type FilterExpenseProp = {
   onFilterSelect : (year: string) => void
 }
 
+export type AddExpenseProp = {
+  title: string;
+  amount: number;
+  date: string;
+}
